@@ -13,6 +13,11 @@ export const ECOMMERCE_ABI = [
   "function processPayment(uint256 invoiceId)",
   "function getInvoice(uint256 invoiceId) view returns (tuple(uint256 invoiceId, address customer, uint256 companyId, tuple(uint256 productId, uint256 quantity, uint256 price, uint256 total)[] items, uint256 totalAmount, uint8 status, uint256 createdAt, uint256 paidAt))",
   "function getCompany(uint256 companyId) view returns (tuple(uint256 companyId, string name, address companyAddress, string taxId, bool isActive))",
+  // Custom errors para decodificar errores del contrato
+  "error InvoiceAlreadyPaid(uint256 invoiceId)",
+  "error InsufficientAllowance(uint256 required, uint256 available)",
+  "error PaymentFailed()",
+  "error InvoiceNotFound(uint256 invoiceId)",
 ] as const;
 
 export function getEuroTokenContract(signerOrProvider: ethers.Provider | ethers.Signer, address: string) {

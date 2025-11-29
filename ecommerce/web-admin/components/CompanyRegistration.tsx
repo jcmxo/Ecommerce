@@ -17,6 +17,7 @@ export default function CompanyRegistration({
 }: CompanyRegistrationProps) {
   const [name, setName] = useState("");
   const [taxId, setTaxId] = useState("");
+  const [companyAddress, setCompanyAddress] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
@@ -36,7 +37,15 @@ export default function CompanyRegistration({
       const signer = await provider.getSigner();
       const contract = getEcommerceContract(signer);
 
-      const tx = await contract.registerCompany(name, walletAddress, taxId);
+      // Usar la dirección ingresada o la wallet conectada por defecto
+      const addressToUse = companyAddress.trim() || walletAddress;
+      
+      // Validar que la dirección sea válida
+      if (!ethers.isAddress(addressToUse)) {
+        throw new Error("La dirección de la empresa no es válida");
+      }
+
+      const tx = await contract.registerCompany(name, addressToUse, taxId);
       await tx.wait();
 
       setSuccess(true);
@@ -101,9 +110,30 @@ export default function CompanyRegistration({
         </div>
 
         <div>
-          <p className="text-sm text-gray-500 mb-4">
-            Dirección de la empresa: <span className="font-mono text-xs">{walletAddress}</span>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Dirección de la Empresa (donde recibirás los pagos) *
+          </label>
+          <input
+            type="text"
+            value={companyAddress}
+            onChange={(e) => setCompanyAddress(e.target.value)}
+            placeholder={walletAddress}
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono text-sm"
+          />
+          <p className="text-xs text-gray-500 mt-2">
+            💡 <strong>Consejo:</strong> Deja vacío para usar tu wallet actual ({walletAddress.slice(0, 6)}...{walletAddress.slice(-4)}), 
+            o ingresa una dirección diferente para recibir los pagos. Si usas la misma wallet, el balance no cambiará cuando compres tus propios productos.
           </p>
+          {companyAddress && companyAddress.trim() !== walletAddress && ethers.isAddress(companyAddress.trim()) && (
+            <p className="text-xs text-blue-600 mt-2">
+              ✅ Usarás una dirección diferente para recibir pagos. Esto permitirá que el balance cambie correctamente.
+            </p>
+          )}
+          {companyAddress && !ethers.isAddress(companyAddress.trim()) && (
+            <p className="text-xs text-red-600 mt-2">
+              ⚠️ La dirección ingresada no es válida. Por favor, verifica que sea una dirección de Ethereum válida.
+            </p>
+          )}
         </div>
 
         {error && (

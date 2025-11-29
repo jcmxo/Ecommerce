@@ -163,6 +163,22 @@ export default function OrdersPage() {
     });
   };
 
+  // Calcular estadísticas de facturas
+  const invoiceStats = {
+    total: invoices.length,
+    pending: invoices.filter((inv) => inv.status === 0).length,
+    paid: invoices.filter((inv) => inv.status === 1).length,
+    cancelled: invoices.filter((inv) => inv.status === 2).length,
+  };
+
+  const totalAmount = invoices.reduce((sum, inv) => sum + inv.totalAmount, BigInt(0));
+  const paidAmount = invoices
+    .filter((inv) => inv.status === 1)
+    .reduce((sum, inv) => sum + inv.totalAmount, BigInt(0));
+  const pendingAmount = invoices
+    .filter((inv) => inv.status === 0)
+    .reduce((sum, inv) => sum + inv.totalAmount, BigInt(0));
+
   if (!walletAddress) {
     return (
       <main className="min-h-screen bg-gradient-to-b from-indigo-50 to-white">
@@ -241,7 +257,63 @@ export default function OrdersPage() {
           </div>
         ) : (
           <div className="space-y-6">
-            {invoices.map((invoice) => {
+            {/* Resumen Estadístico */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+              <div className="glass rounded-xl shadow-soft p-6 bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-blue-600 mb-1">Total Facturas</p>
+                    <p className="text-3xl font-bold text-blue-900">{invoiceStats.total}</p>
+                  </div>
+                  <div className="text-4xl">📋</div>
+                </div>
+              </div>
+
+              <div className="glass rounded-xl shadow-soft p-6 bg-gradient-to-br from-yellow-50 to-yellow-100 border-2 border-yellow-200">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-yellow-600 mb-1">Pendientes</p>
+                    <p className="text-3xl font-bold text-yellow-900">{invoiceStats.pending}</p>
+                    {pendingAmount > BigInt(0) && (
+                      <p className="text-xs text-yellow-700 mt-1">
+                        {formatEurt(pendingAmount)} EURT
+                      </p>
+                    )}
+                  </div>
+                  <div className="text-4xl">⏳</div>
+                </div>
+              </div>
+
+              <div className="glass rounded-xl shadow-soft p-6 bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-200">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-green-600 mb-1">Pagadas</p>
+                    <p className="text-3xl font-bold text-green-900">{invoiceStats.paid}</p>
+                    {paidAmount > BigInt(0) && (
+                      <p className="text-xs text-green-700 mt-1">
+                        {formatEurt(paidAmount)} EURT
+                      </p>
+                    )}
+                  </div>
+                  <div className="text-4xl">✅</div>
+                </div>
+              </div>
+
+              <div className="glass rounded-xl shadow-soft p-6 bg-gradient-to-br from-red-50 to-red-100 border-2 border-red-200">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-red-600 mb-1">Canceladas</p>
+                    <p className="text-3xl font-bold text-red-900">{invoiceStats.cancelled}</p>
+                  </div>
+                  <div className="text-4xl">❌</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Lista de Facturas */}
+            <div className="space-y-4">
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">Todas las Facturas</h2>
+              {invoices.map((invoice) => {
               const company = companies.get(invoice.companyId);
               return (
                 <div
@@ -298,6 +370,7 @@ export default function OrdersPage() {
                 </div>
               );
             })}
+            </div>
           </div>
         )}
       </div>
