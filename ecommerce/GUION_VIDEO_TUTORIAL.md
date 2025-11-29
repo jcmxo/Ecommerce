@@ -30,6 +30,13 @@ Vamos a ver:
 
 **ACCIÓN EN PANTALLA:**
 - Mostrar todas las aplicaciones abiertas (4 pestañas)
+
+1. Compra Stablecoin (Comprar EuroTokens): `http://localhost:6001`
+2. Pasarela de Pagos (Procesar pagos): `http://localhost:6002`
+3. Web Admin (Panel de Administración): `http://localhost:6003`
+4. Web Cliente (Tienda Online): `http://localhost:6004`
+5. Anvil (Blockchain local): consola/Puerto 8545
+
 - Mostrar Anvil corriendo
 - Zoom a las URLs de cada aplicación
 
