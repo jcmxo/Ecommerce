@@ -3,8 +3,8 @@
 # Script para configurar el archivo .env con las claves de Stripe
 
 cat > .env << 'EOF'
-# Stripe Keys
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_51SYprEAsv8aUk1j9o4oMUDqoApvBEoDLrzcKsXnV32ppl3M1l2ic3aUA1rorP2S9oobJqhljW2mbGamGTTNEBTM100AR2iCfO0
+# Stripe Keys - Reemplaza con tus claves reales
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_tu_clave_publica_aqui
 STRIPE_SECRET_KEY=sk_test_tu_clave_secreta_aqui
 
 # Ethereum (configurar después del deploy)
