@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>E-Commerce con Blockchain y Stablecoins</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+<body>
+  <main>
+    <h1>🛒 E-Commerce con Blockchain y Stablecoins</h1>
+    <h2>Sistema Completo de Comercio Electrónico Descentralizado</h2>
+
+    <hr />
+
+    <h2 id="tabla-de-contenidos">📋 Tabla de Contenidos</h2>
+    <ol>
+      <li><a href="#introduccion">Introducción</a></li>
+      <li><a href="#arquitectura-del-sistema">Arquitectura del Sistema</a></li>
+      <li><a href="#aplicaciones-del-proyecto">Aplicaciones del Proyecto</a></li>
+      <li><a href="#tecnologias-utilizadas">Tecnologías Utilizadas</a></li>
+      <li><a href="#flujo-de-trabajo-completo">Flujo de Trabajo Completo</a></li>
+      <li><a href="#demostracion-visual">Demostración Visual</a></li>
+      <li><a href="#conclusiones">Conclusiones</a></li>
+    </ol>
+
+    <hr />
+
+    <section id="introduccion">
+      <h2>🎯 Introducción</h2>
+
+      <h3>¿Qué es este proyecto?</h3>
+
+      <p>Sistema completo de <strong>e-commerce descentralizado</strong> que integra:</p>
+
+      <ul>
+        <li>✅ <strong>Blockchain local</strong> (Anvil) para desarrollo</li>
+        <li>✅ <strong>Smart Contracts</strong> (Solidity) para gestión de comercio</li>
+        <li>✅ <strong>Stablecoin propia</strong> (EuroToken - EURT)</li>
+        <li>✅ <strong>Integración con Stripe</strong> para compra de tokens con tarjeta</li>
+        <li>✅ <strong>Pasarela de pagos</strong> con criptomonedas</li>
+        <li>✅ <strong>Panel de administración</strong> para empresas</li>
+        <li>✅ <strong>Tienda online</strong> para clientes finales</li>
+      </ul>
+
+      <h3>Objetivos</h3>
+      <ul>
+        <li>Demostrar integración completa entre blockchain y e-commerce tradicional</li>
+        <li>Facilitar pagos con stablecoins</li>
+        <li>Proporcionar experiencia de usuario fluida</li>
+        <li>Garantizar transparencia y seguridad mediante smart contracts</li>
+      </ul>
+    </section>
+
+    <hr />
+
+    <section id="arquitectura-del-sistema">
+      <h2>🏗️ Arquitectura del Sistema</h2>
+
+      <pre><code>┌─────────────────────────────────────────────────────────────┐
+│                    E-COMMERCE BLOCKCHAIN                    │
+└─────────────────────────────────────────────────────────────┘
+                              │
+        ┌─────────────────────┼─────────────────────┐
+        │                     │                     │
+   ┌────▼────┐          ┌─────▼─────┐        ┌─────▼─────┐
+   │  Web    │          │   Web      │        │  Compra   │
+   │ Admin   │          │ Customer   │        │ Stablecoin│
+   │(6011)   │          │  (6004)   │        │  (6001)   │
+   └────┬────┘          └─────┬─────┘        └─────┬─────┘
+        │                     │                     │
+        └─────────────────────┼─────────────────────┘
+                              │
+                    ┌─────────▼─────────┐
+                    │  Pasarela de Pago │
+                    │      (6002)       │
+                    └─────────┬─────────┘
+                              │
+        ┌─────────────────────┼─────────────────────┐
+        │                     │                     │
+   ┌────▼────┐          ┌─────▼─────┐        ┌─────▼─────┐
+   │Ecommerce│          │ EuroToken │        │   Anvil   │
+   │Contract │          │  Contract │        │  (8545)   │
+   └─────────┘          └───────────┘        └───────────┘
+</code></pre>
+
+      <h3>Componentes Principales</h3>
+
+      <ol>
+        <li>
+          <strong>Blockchain Local (Anvil)</strong>
+          <ul>
+            <li>Puerto: 8545</li>
+            <li>Chain ID: 31337</li>
+            <li>RPC endpoint para MetaMask</li>
+          </ul>
+        </li>
+        <li>
+          <strong>Smart Contracts</strong>
+          <ul>
+            <li><strong>EuroToken (EURT)</strong>: Token ERC20 con 6 decimales</li>
+            <li><strong>Ecommerce</strong>: Gestión de empresas, productos, carritos, facturas y pagos</li>
+          </ul>
+        </li>
+        <li>
+          <strong>Aplicaciones Frontend</strong>
+          <ul>
+            <li><strong>Web Admin</strong>: Panel de administración (Puerto 6011)</li>
+            <li><strong>Web Customer</strong>: Tienda online (Puerto 6004)</li>
+            <li><strong>Compra Stablecoin</strong>: Compra de tokens con Stripe (Puerto 6001)</li>
+            <li><strong>Pasarela de Pago</strong>: Procesamiento de pagos (Puerto 6002)</li>
+          </ul>
+        </li>
+      </ol>
+    </section>
+
+    <hr />
+
+    <section id="aplicaciones-del-proyecto">
+      <h2>🚀 Aplicaciones del Proyecto</h2>
+
+      <h3>1. Web Admin - Panel de Administración</h3>
+
+      <p><strong>URL:</strong> <code>http://localhost:6011</code></p>
+
+      <p><strong>Funcionalidades:</strong></p>
+      <ul>
+        <li>✅ Registro de empresas</li>
+        <li>✅ Gestión de productos</li>
+        <li>✅ Visualización de facturas</li>
+        <li>✅ Gestión de inventario</li>
+        <li>✅ Estadísticas de ventas</li>
+      </ul>
+
+      <p><strong>Características:</strong></p>
+      <ul>
+        <li>Interfaz intuitiva y moderna</li>
+        <li>Conexión con MetaMask</li>
+        <li>Gestión completa de catálogo</li>
+        <li>Dashboard con métricas</li>
+      </ul>
+
+      <hr />
+
+      <h3>2. Web Customer - Tienda Online</h3>
+
+      <p><strong>URL:</strong> <code>http://localhost:6004</code></p>
+
+      <p><strong>Funcionalidades:</strong></p>
+      <ul>
+        <li>✅ Catálogo de productos</li>
+        <li>✅ Carrito de compras</li>
+        <li>✅ Checkout integrado</li>
+        <li>✅ Historial de pedidos</li>
+        <li>✅ Integración con pasarela de pago</li>
+      </ul>
+
+      <p><strong>Características:</strong></p>
+      <ul>
+        <li>Diseño responsive</li>
+        <li>Búsqueda y filtrado de productos</li>
+        <li>Carrito persistente</li>
+        <li>Pago con EuroToken</li>
+      </ul>
+
+      <hr />
+
+      <h3>3. Compra Stablecoin</h3>
+
+      <p><strong>URL:</strong> <code>http://localhost:6001</code></p>
+
+      <p><strong>Funcionalidades:</strong></p>
+      <ul>
+        <li>✅ Compra de EuroToken con tarjeta de crédito</li>
+        <li>✅ Integración con Stripe</li>
+        <li>✅ Mint automático de tokens</li>
+        <li>✅ Verificación de saldo</li>
+      </ul>
+
+      <p><strong>Características:</strong></p>
+      <ul>
+        <li>Proceso de compra simplificado</li>
+        <li>Validación en tiempo real</li>
+        <li>Confirmación de transacciones</li>
+        <li>Historial de compras</li>
+      </ul>
+
+      <hr />
+
+      <h3>4. Pasarela de Pago</h3>
+
+      <p><strong>URL:</strong> <code>http://localhost:6002</code></p>
+
+      <p><strong>Funcionalidades:</strong></p>
+      <ul>
+        <li>✅ Procesamiento de pagos con EuroToken</li>
+        <li>✅ Aprobación de tokens</li>
+        <li>✅ Verificación de saldo</li>
+        <li>✅ Redirección automática</li>
+        <li>✅ Confirmación de pagos</li>
+      </ul>
+
+      <p><strong>Características:</strong></p>
+      <ul>
+        <li>Interfaz de pago segura</li>
+        <li>Validación de transacciones</li>
+        <li>Integración con smart contracts</li>
+        <li>Notificaciones en tiempo real</li>
+      </ul>
+    </section>
+
+    <hr />
+
+    <section id="tecnologias-utilizadas">
+      <h2>💻 Tecnologías Utilizadas</h2>
+
+      <h3>Blockchain y Smart Contracts</h3>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Tecnología</th>
+            <th>Versión</th>
+            <th>Uso</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Solidity</strong></td>
+            <td>^0.8.20</td>
+            <td>Lenguaje de smart contracts</td>
+          </tr>
+          <tr>
+            <td><strong>Foundry/Forge</strong></td>
+            <td>Latest</td>
+            <td>Framework de desarrollo</td>
+          </tr>
+          <tr>
+            <td><strong>Anvil</strong></td>
+            <td>Latest</td>
+            <td>Blockchain local</td>
+          </tr>
+          <tr>
+            <td><strong>Ethers.js</strong></td>
+            <td>v6.13.0</td>
+            <td>Interacción con blockchain</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Frontend</h3>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Tecnología</th>
+            <th>Versión</th>
+            <th>Uso</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Next.js</strong></td>
+            <td>15.0.0</td>
+            <td>Framework React</td>
+          </tr>
+          <tr>
+            <td><strong>TypeScript</strong></td>
+            <td>5.3.3</td>
+            <td>Tipado estático</td>
+          </tr>
+          <tr>
+            <td><strong>Tailwind CSS</strong></td>
+            <td>3.4.1</td>
+            <td>Estilos</td>
+          </tr>
+          <tr>
+            <td><strong>React</strong></td>
+            <td>18.3.1</td>
+            <td>Librería UI</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Pagos y Integraciones</h3>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Tecnología</th>
+            <th>Uso</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Stripe</strong></td>
+            <td>Procesamiento de pagos fiat</td>
+          </tr>
+          <tr>
+            <td><strong>MetaMask</strong></td>
+            <td>Wallet de criptomonedas</td>
+          </tr>
+          <tr>
+            <td><strong>ERC20</strong></td>
+            <td>Estándar de tokens</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <hr />
+
+    <section id="flujo-de-trabajo-completo">
+      <h2>🔄 Flujo de Trabajo Completo</h2>
+
+      <h3>Flujo 1: Compra de EuroToken</h3>
+
+      <pre><code>1. Usuario accede a Compra Stablecoin (localhost:6001)
+2. Conecta MetaMask
+3. Ingresa cantidad de EURT a comprar
+4. Procesa pago con tarjeta (Stripe)
+5. Smart contract mintea tokens automáticamente
+6. Usuario recibe EURT en su wallet
+</code></pre>
+
+      <h3>Flujo 2: Compra de Producto</h3>
+
+      <pre><code>1. Usuario navega en Web Customer (localhost:6004)
+2. Agrega productos al carrito
+3. Procede al checkout
+4. Se crea factura en blockchain
+5. Redirección a Pasarela de Pago (localhost:6002)
+6. Usuario aprueba y paga con EuroToken
+7. Confirmación y redirección a Web Customer
+</code></pre>
+
+      <h3>Flujo 3: Administración</h3>
+
+      <pre><code>1. Empresa se registra en Web Admin (localhost:6011)
+2. Conecta MetaMask (wallet de la empresa)
+3. Crea productos en el catálogo
+4. Gestiona inventario
+5. Visualiza facturas y estadísticas
+</code></pre>
+    </section>
+
+    <hr />
+
+    <section id="demostracion-visual">
+      <h2>📸 Demostración Visual</h2>
+
+      <p><strong>Nota:</strong> Las siguientes secciones incluyen las capturas de pantalla extraídas del documento Word. Las imágenes están ubicadas en <code>presentacion/imagenes/</code>.</p>
+
+      <h3>Capturas de Pantalla del Sistema</h3>
+
+      <figure>
+        <img src="presentacion/imagenes/image1.png" alt="Imagen 1: Portada / Dashboard Principal" />
+        <figcaption>Imagen 1: Portada / Dashboard Principal</figcaption>
+      </figure>
+
+      <figure>
+        <img src="presentacion/imagenes/image2.png" alt="Imagen 2: Web Admin - Registro de Empresa" />
+        <figcaption>Imagen 2: Web Admin - Registro de Empresa</figcaption>
+      </figure>
+
+      <figure>
+        <img src="presentacion/imagenes/image3.png" alt="Imagen 3: Web Admin - Gestión de Productos" />
+        <figcaption>Imagen 3: Web Admin - Gestión de Productos</figcaption>
+      </figure>
+
+      <figure>
+        <img src="presentacion/imagenes/image4.png" alt="Imagen 4: Web Customer - Catálogo de Productos" />
+        <figcaption>Imagen 4: Web Customer - Catálogo de Productos</figcaption>
+      </figure>
+
+      <figure>
+        <img src="presentacion/imagenes/image5.png" alt="Imagen 5: Web Customer - Carrito de Compras" />
+        <figcaption>Imagen 5: Web Customer - Carrito de Compras</figcaption>
+      </figure>
+
+      <figure>
+        <img src="presentacion/imagenes/image6.png" alt="Imagen 6: Pasarela de Pago - Proceso de Pago" />
+        <figcaption>Imagen 6: Pasarela de Pago - Proceso de Pago</figcaption>
+      </figure>
+
+      <figure>
+        <img src="presentacion/imagenes/image7.png" alt="Imagen 7: Compra Stablecoin - Interfaz de Compra" />
+        <figcaption>Imagen 7: Compra Stablecoin - Interfaz de Compra</figcaption>
+      </figure>
+
+      <figure>
+        <img src="presentacion/imagenes/image8.png" alt="Imagen 8: MetaMask - Confirmación de Transacción" />
+        <figcaption>Imagen 8: MetaMask - Confirmación de Transacción</figcaption>
+      </figure>
+
+      <figure>
+        <img src="presentacion/imagenes/image9.png" alt="Imagen 9: Web Admin - Dashboard de Estadísticas" />
+        <figcaption>Imagen 9: Web Admin - Dashboard de Estadísticas</figcaption>
+      </figure>
+
+      <figure>
+        <img src="presentacion/imagenes/image10.png" alt="Imagen 10: Web Customer - Detalle de Producto" />
+        <figcaption>Imagen 10: Web Customer - Detalle de Producto</figcaption>
+      </figure>
+
+      <figure>
+        <img src="presentacion/imagenes/image11.png" alt="Imagen 11: Pasarela de Pago - Confirmación" />
+        <figcaption>Imagen 11: Pasarela de Pago - Confirmación</figcaption>
+      </figure>
+
+      <figure>
+        <img src="presentacion/imagenes/image12.png" alt="Imagen 12: Compra Stablecoin - Historial" />
+        <figcaption>Imagen 12: Compra Stablecoin - Historial</figcaption>
+      </figure>
+
+      <figure>
+        <img src="presentacion/imagenes/image13.png" alt="Imagen 13: Web Admin - Facturas" />
+        <figcaption>Imagen 13: Web Admin - Facturas</figcaption>
+      </figure>
+
+      <figure>
+        <img src="presentacion/imagenes/image14.png" alt="Imagen 14: Web Customer - Checkout" />
+        <figcaption>Imagen 14: Web Customer - Checkout</figcaption>
+      </figure>
+
+      <figure>
+        <img src="presentacion/imagenes/image15.png" alt="Imagen 15: Pasarela de Pago - Verificación" />
+        <figcaption>Imagen 15: Pasarela de Pago - Verificación</figcaption>
+      </figure>
+
+      <figure>
+        <img src="presentacion/imagenes/image16.png" alt="Imagen 16: Compra Stablecoin - Proceso de Pago" />
+        <figcaption>Imagen 16: Compra Stablecoin - Proceso de Pago</figcaption>
+      </figure>
+
+      <figure>
+        <img src="presentacion/imagenes/image17.png" alt="Imagen 17: Web Admin - Gestión de Inventario" />
+        <figcaption>Imagen 17: Web Admin - Gestión de Inventario</figcaption>
+      </figure>
+
+      <figure>
+        <img src="presentacion/imagenes/image18.png" alt="Imagen 18: Web Customer - Búsqueda" />
+        <figcaption>Imagen 18: Web Customer - Búsqueda</figcaption>
+      </figure>
+
+      <figure>
+        <img src="presentacion/imagenes/image19.png" alt="Imagen 19: Pasarela de Pago - Error Handling" />
+        <figcaption>Imagen 19: Pasarela de Pago - Error Handling</figcaption>
+      </figure>
+
+      <figure>
+        <img src="presentacion/imagenes/image20.png" alt="Imagen 20: Compra Stablecoin - Saldo" />
+        <figcaption>Imagen 20: Compra Stablecoin - Saldo</figcaption>
+      </figure>
+
+      <h3>Imagenes 21-42: Capturas Adicionales</h3>
+
+      <figure>
+        <img src="presentacion/imagenes/image21.png" alt="Imagen 21: Captura adicional 21" />
+        <figcaption>Imagen 21</figcaption>
+      </figure>
+      <figure>
+        <img src="presentacion/imagenes/image22.png" alt="Imagen 22: Captura adicional 22" />
+        <figcaption>Imagen 22</figcaption>
+      </figure>
+      <figure>
+        <img src="presentacion/imagenes/image23.png" alt="Imagen 23: Captura adicional 23" />
+        <figcaption>Imagen 23</figcaption>
+      </figure>
+      <figure>
+        <img src="presentacion/imagenes/image24.png" alt="Imagen 24: Captura adicional 24" />
+        <figcaption>Imagen 24</figcaption>
+      </figure>
+      <figure>
+        <img src="presentacion/imagenes/image25.png" alt="Imagen 25: Captura adicional 25" />
+        <figcaption>Imagen 25</figcaption>
+      </figure>
+      <figure>
+        <img src="presentacion/imagenes/image26.png" alt="Imagen 26: Captura adicional 26" />
+        <figcaption>Imagen 26</figcaption>
+      </figure>
+      <figure>
+        <img src="presentacion/imagenes/image27.png" alt="Imagen 27: Captura adicional 27" />
+        <figcaption>Imagen 27</figcaption>
+      </figure>
+      <figure>
+        <img src="presentacion/imagenes/image28.png" alt="Imagen 28: Captura adicional 28" />
+        <figcaption>Imagen 28</figcaption>
+      </figure>
+      <figure>
+        <img src="presentacion/imagenes/image29.png" alt="Imagen 29: Captura adicional 29" />
+        <figcaption>Imagen 29</figcaption>
+      </figure>
+      <figure>
+        <img src="presentacion/imagenes/image30.png" alt="Imagen 30: Captura adicional 30" />
+        <figcaption>Imagen 30</figcaption>
+      </figure>
+      <figure>
+        <img src="presentacion/imagenes/image31.png" alt="Imagen 31: Captura adicional 31" />
+        <figcaption>Imagen 31</figcaption>
+      </figure>
+      <figure>
+        <img src="presentacion/imagenes/image32.png" alt="Imagen 32: Captura adicional 32" />
+        <figcaption>Imagen 32</figcaption>
+      </figure>
+      <figure>
+        <img src="presentacion/imagenes/image33.png" alt="Imagen 33: Captura adicional 33" />
+        <figcaption>Imagen 33</figcaption>
+      </figure>
+      <figure>
+        <img src="presentacion/imagenes/image34.png" alt="Imagen 34: Captura adicional 34" />
+        <figcaption>Imagen 34</figcaption>
+      </figure>
+      <figure>
+        <img src="presentacion/imagenes/image35.png" alt="Imagen 35: Captura adicional 35" />
+        <figcaption>Imagen 35</figcaption>
+      </figure>
+      <figure>
+        <img src="presentacion/imagenes/image36.png" alt="Imagen 36: Captura adicional 36" />
+        <figcaption>Imagen 36</figcaption>
+      </figure>
+      <figure>
+        <img src="presentacion/imagenes/image37.png" alt="Imagen 37: Captura adicional 37" />
+        <figcaption>Imagen 37</figcaption>
+      </figure>
+      <figure>
+        <img src="presentacion/imagenes/image38.png" alt="Imagen 38: Captura adicional 38" />
+        <figcaption>Imagen 38</figcaption>
+      </figure>
+      <figure>
+        <img src="presentacion/imagenes/image39.png" alt="Imagen 39: Captura adicional 39" />
+        <figcaption>Imagen 39</figcaption>
+      </figure>
+      <figure>
+        <img src="presentacion/imagenes/image40.png" alt="Imagen 40: Captura adicional 40" />
+        <figcaption>Imagen 40</figcaption>
+      </figure>
+      <figure>
+        <img src="presentacion/imagenes/image41.png" alt="Imagen 41: Captura adicional 41" />
+        <figcaption>Imagen 41</figcaption>
+      </figure>
+      <figure>
+        <img src="presentacion/imagenes/image42.png" alt="Imagen 42: Captura adicional 42" />
+        <figcaption>Imagen 42</figcaption>
+      </figure>
+    </section>
+
+    <hr />
+
+    <section id="caracteristicas-destacadas">
+      <h2>🎯 Características Destacadas</h2>
+
+      <h3>Seguridad</h3>
+      <ul>
+        <li>✅ Smart contracts auditables</li>
+        <li>✅ Transacciones verificables en blockchain</li>
+        <li>✅ Integración segura con Stripe</li>
+        <li>✅ Validación de pagos en tiempo real</li>
+      </ul>
+
+      <h3>Experiencia de Usuario</h3>
+      <ul>
+        <li>✅ Interfaz moderna y responsive</li>
+        <li>✅ Proceso de pago simplificado</li>
+        <li>✅ Feedback visual inmediato</li>
+        <li>✅ Manejo de errores robusto</li>
+      </ul>
+
+      <h3>Escalabilidad</h3>
+      <ul>
+        <li>✅ Arquitectura modular</li>
+        <li>✅ Contratos reutilizables</li>
+        <li>✅ Sistema de librerías (CompanyLib, ProductLib, etc.)</li>
+        <li>✅ Fácil extensión de funcionalidades</li>
+      </ul>
+    </section>
+
+    <hr />
+
+    <section id="estadisticas-del-proyecto">
+      <h2>📊 Estadísticas del Proyecto</h2>
+
+      <h3>Código</h3>
+      <ul>
+        <li><strong>Smart Contracts:</strong> 2 (EuroToken + Ecommerce)</li>
+        <li><strong>Aplicaciones Frontend:</strong> 4</li>
+        <li><strong>Líneas de Código:</strong> ~15,000+</li>
+        <li><strong>Tests:</strong> Cobertura completa de contratos</li>
+      </ul>
+
+      <h3>Funcionalidades</h3>
+      <ul>
+        <li>✅ Gestión completa de empresas</li>
+        <li>✅ Catálogo de productos ilimitado</li>
+        <li>✅ Sistema de carritos</li>
+        <li>✅ Facturación automática</li>
+        <li>✅ Procesamiento de pagos</li>
+        <li>✅ Integración Stripe</li>
+        <li>✅ Mint de tokens</li>
+      </ul>
+    </section>
+
+    <hr />
+
+    <section id="proximos-pasos">
+      <h2>🔮 Próximos Pasos</h2>
+
+      <h3>Mejoras Planificadas</h3>
+
+      <ol>
+        <li>
+          <strong>Optimización de Gas</strong>
+          <ul>
+            <li>Reducir costos de transacciones</li>
+            <li>Implementar batch operations</li>
+          </ul>
+        </li>
+        <li>
+          <strong>Mejoras de UI/UX</strong>
+          <ul>
+            <li>Modo oscuro</li>
+            <li>Internacionalización (i18n)</li>
+            <li>Mejores animaciones</li>
+          </ul>
+        </li>
+        <li>
+          <strong>Funcionalidades Adicionales</strong>
+          <ul>
+            <li>Sistema de reviews</li>
+            <li>Programa de fidelización</li>
+            <li>Descuentos y cupones</li>
+            <li>Notificaciones push</li>
+          </ul>
+        </li>
+        <li>
+          <strong>Testing</strong>
+          <ul>
+            <li>Tests de integración E2E</li>
+            <li>Tests de carga</li>
+            <li>Auditoría de seguridad</li>
+          </ul>
+        </li>
+      </ol>
+    </section>
+
+    <hr />
+
+    <section id="conclusiones">
+      <h2>✅ Conclusiones</h2>
+
+      <h3>Logros</h3>
+      <ul>
+        <li>✅ Sistema completo funcional</li>
+        <li>✅ Integración blockchain + e-commerce tradicional</li>
+        <li>✅ Experiencia de usuario fluida</li>
+        <li>✅ Arquitectura escalable</li>
+        <li>✅ Código bien documentado</li>
+      </ul>
+
+      <h3>Impacto</h3>
+      <p>Este proyecto demuestra cómo la tecnología blockchain puede integrarse de manera transparente en aplicaciones de e-commerce tradicionales, proporcionando:</p>
+      <ul>
+        <li><strong>Transparencia:</strong> Todas las transacciones son verificables</li>
+        <li><strong>Seguridad:</strong> Smart contracts garantizan la ejecución correcta</li>
+        <li><strong>Eficiencia:</strong> Pagos instantáneos con stablecoins</li>
+        <li><strong>Flexibilidad:</strong> Sistema modular y extensible</li>
+      </ul>
+
+      <h3>Tecnologías del Futuro</h3>
+      <p>El e-commerce descentralizado representa el futuro del comercio online, combinando:</p>
+      <ul>
+        <li>La facilidad de uso de las aplicaciones tradicionales</li>
+        <li>La seguridad y transparencia de blockchain</li>
+        <li>La flexibilidad de los pagos con criptomonedas</li>
+      </ul>
+    </section>
+
+    <hr />
+
+    <section id="informacion-de-contacto">
+      <h2>📞 Información de Contacto</h2>
+
+      <p><strong>Proyecto:</strong> E-Commerce con Blockchain y Stablecoins</p>
+      <p><strong>Repositorio:</strong> <code>/mnt/c/Users/jcmxo/ecommerce</code></p>
+      <p><strong>Documentación:</strong> Ver archivos README.md en cada directorio</p>
+    </section>
+
+    <hr />
+
+    <section id="agradecimientos">
+      <h2>🙏 Agradecimientos</h2>
+
+      <ul>
+        <li><strong>Foundry</strong> - Framework de desarrollo de smart contracts</li>
+        <li><strong>Next.js</strong> - Framework React de próxima generación</li>
+        <li><strong>Stripe</strong> - Procesamiento de pagos</li>
+        <li><strong>OpenZeppelin</strong> - Contratos seguros y auditados</li>
+        <li><strong>Ethers.js</strong> - Librería de interacción con Ethereum</li>
+      </ul>
+
+      <p><strong>¡Gracias por su atención!</strong></p>
+      <p><em>Presentación generada automáticamente - Diciembre 2024</em></p>
+    </section>
+  </main>
+</body>
+</html>

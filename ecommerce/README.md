@@ -1,5 +1,13 @@
 # Proyecto E-Commerce con Blockchain y Stablecoins
 
+## 🎥 Video de Presentación
+
+[![Video de Presentación](https://img.youtube.com/vi/H_6zbPxbMcU/0.jpg)](https://youtu.be/H_6zbPxbMcU)
+
+**Ver presentación completa:** [https://youtu.be/H_6zbPxbMcU](https://youtu.be/H_6zbPxbMcU)
+
+---
+
 Sistema completo de e-commerce basado en blockchain que integra:
 - ✅ Creación y gestión de una stablecoin (EuroToken)
 - ✅ Compra de stablecoins con tarjeta de crédito (Stripe)
