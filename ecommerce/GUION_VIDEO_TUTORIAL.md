@@ -1,5 +1,13 @@
 # 🎬 Guion de Video Tutorial: Sistema E-commerce Blockchain
 
+## 🎥 Video de Presentación del Proyecto
+
+[![Video de Presentación](https://img.youtube.com/vi/H_6zbPxbMcU/0.jpg)](https://youtu.be/H_6zbPxbMcU)
+
+**Ver presentación completa:** [https://youtu.be/H_6zbPxbMcU](https://youtu.be/H_6zbPxbMcU)
+
+---
+
 ## 📋 INFORMACIÓN GENERAL
 
 **Título**: Sistema E-commerce con Blockchain - Tutorial Completo  
@@ -32,7 +40,7 @@ Vamos a ver:
 - Mostrar todas las aplicaciones abiertas (4 pestañas)
 
 1. Compra Stablecoin (Comprar EuroTokens): `http://localhost:6001`
-2. Pasarela de Pagos (Procesar pagos): `http://localhost:6002`
+2. Pasarela de Pagos (Procesar pagos): `http://localhost:6004`
 3. Web Admin (Panel de Administración): `http://localhost:6003`
 4. Web Cliente (Tienda Online): `http://localhost:6004`
 5. Anvil (Blockchain local): consola/Puerto 8545

@@ -1,5 +1,13 @@
 # 🎥 Guía para Crear el Video Tutorial
 
+## 🎬 Video de Presentación del Proyecto
+
+[![Video de Presentación](https://img.youtube.com/vi/H_6zbPxbMcU/0.jpg)](https://youtu.be/H_6zbPxbMcU)
+
+**Ver presentación completa:** [https://youtu.be/H_6zbPxbMcU](https://youtu.be/H_6zbPxbMcU)
+
+---
+
 ## 📋 ¿Qué se creó?
 
 He creado un **guion completo** para grabar un video tutorial del sistema. El guion incluye:
