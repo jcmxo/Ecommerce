@@ -1,0 +1,25 @@
+{
+  "name": "chrome-wallet",
+  "version": "1.0.0",
+  "description": "Ethereum Wallet Chrome Extension",
+  "type": "module",
+  "scripts": {
+    "dev": "vite build --watch",
+    "build": "vite build && node create-icons-final.js",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "ethers": "^6.13.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.268",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.5",
+    "@vitejs/plugin-react": "^4.3.1",
+    "sharp": "^0.34.5",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.2"
+  }
+}

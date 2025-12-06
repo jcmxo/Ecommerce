@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CodeCrypto Wallet - Test App</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 2rem;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      color: white;
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .card h2 {
+      color: #333;
+      margin-bottom: 1rem;
+      font-size: 1.2rem;
+    }
+
+    .status {
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+
+    .status.success {
+      background: #d4edda;
+      border: 1px solid #c3e6cb;
+      color: #155724;
+    }
+
+    .status.error {
+      background: #f8d7da;
+      border: 1px solid #f5c6cb;
+      color: #721c24;
+    }
+
+    .status.info {
+      background: #d1ecf1;
+      border: 1px solid #bee5eb;
+      color: #0c5460;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      font-family: monospace;
+    }
+
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    button {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-right: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    button:hover {
+      background: #5568d3;
+      transform: translateY(-1px);
+    }
+
+    button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    button.danger {
+      background: #dc3545;
+    }
+
+    button.danger:hover {
+      background: #c82333;
+    }
+
+    .account-info {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .info-item {
+      background: #f8f9fa;
+      padding: 1rem;
+      border-radius: 8px;
+    }
+
+    .info-label {
+      font-weight: 600;
+      color: #666;
+      font-size: 0.9rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .info-value {
+      font-family: monospace;
+      color: #333;
+      word-break: break-all;
+    }
+
+    .history {
+      max-height: 300px;
+      overflow-y: auto;
+      background: #f8f9fa;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-top: 1rem;
+    }
+
+    .history-item {
+      padding: 0.75rem;
+      margin-bottom: 0.5rem;
+      background: white;
+      border-radius: 6px;
+      border-left: 4px solid #667eea;
+    }
+
+    .history-item.success {
+      border-left-color: #28a745;
+    }
+
+    .history-item.error {
+      border-left-color: #dc3545;
+    }
+
+    .history-time {
+      font-size: 0.85rem;
+      color: #666;
+      margin-bottom: 0.25rem;
+    }
+
+    .history-message {
+      color: #333;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .balance-display {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 1.5rem;
+      border-radius: 12px;
+      text-align: center;
+      margin-top: 1rem;
+    }
+
+    .balance-value {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-top: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔒 CodeCrypto Wallet Test App</h1>
+
+    <!-- Estado de Conexión -->
+    <div class="card">
+      <h2>1. Estado de Conexión</h2>
+      <div id="connection-status" class="status info">
+        Verificando conexión...
+      </div>
+      <button id="connect-btn">Conectar Wallet</button>
+      <div id="account-info" class="account-info" style="display: none;">
+        <div class="info-item">
+          <div class="info-label">Cuenta:</div>
+          <div class="info-value" id="account-address">-</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Balance:</div>
+          <div class="info-value" id="account-balance">-</div>
+        </div>
+        <div class="info-item">
+          <div class="info-label">Chain ID:</div>
+          <div class="info-value" id="chain-id">-</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <!-- Enviar Transacción -->
+      <div class="card">
+        <h2>2. Enviar Transacción</h2>
+        <label>Dirección Destino:</label>
+        <input type="text" id="tx-to" placeholder="0x..." value="0x70997970C51812dc3A010C7d01b50e0d17dc79C8">
+        <label>Valor (ETH):</label>
+        <input type="text" id="tx-value" placeholder="0.01" value="0.01">
+        <button id="send-tx-btn">Enviar Transacción</button>
+      </div>
+
+      <!-- Firmar Mensaje EIP-712 -->
+      <div class="card">
+        <h2>3. Firmar Mensaje EIP-712</h2>
+        <label>Mensaje a firmar:</label>
+        <textarea id="sign-message" placeholder="Hola desde CodeCrypto Wallet">Hola desde CodeCrypto Wallet</textarea>
+        <button id="sign-btn">Firmar Mensaje EIP-712</button>
+      </div>
+    </div>
+
+    <!-- Cambiar Red -->
+    <div class="card">
+      <h2>4. Cambiar Red</h2>
+      <button id="switch-localhost">Cambiar a Localhost (31337)</button>
+      <button id="switch-sepolia">Cambiar a Sepolia (11155111)</button>
+    </div>
+
+    <!-- Balance de la Cuenta -->
+    <div class="card">
+      <h2>5. Balance de la Cuenta</h2>
+      <p>El balance se actualiza automáticamente cada 5 segundos</p>
+      <button id="update-balance-btn">Actualizar Balance Ahora</button>
+      <div id="balance-display" class="balance-display" style="display: none;">
+        <div>Balance actualizado:</div>
+        <div class="balance-value" id="balance-value">0 ETH</div>
+      </div>
+    </div>
+
+    <!-- Historial -->
+    <div class="card">
+      <h2>6. Historial de Transacciones</h2>
+      <div id="tx-history" class="history">
+        <div class="history-item">
+          <div class="history-time">No hay transacciones aún</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>7. Historial de Mensajes Firmados</h2>
+      <div id="sign-history" class="history">
+        <div class="history-item">
+          <div class="history-time">No hay mensajes firmados aún</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentAccount = null;
+    let balanceInterval = null;
+
+    // Verificar si el provider está disponible
+    function checkProvider() {
+      const statusEl = document.getElementById('connection-status');
+      
+      // Esperar un momento para que el content script inyecte el provider
+      setTimeout(() => {
+        if (typeof window.codecrypto !== 'undefined' && window.codecrypto) {
+          statusEl.className = 'status success';
+          statusEl.innerHTML = '✓ Provider CodeCrypto detectado';
+        } else {
+          statusEl.className = 'status error';
+          statusEl.innerHTML = '✗ Provider CodeCrypto no encontrado. Asegúrate de que la extensión esté instalada y activa. Recarga la página después de instalar la extensión.';
+        }
+      }, 500);
+    }
+
+    // Conectar wallet
+    async function connectWallet() {
+      try {
+        // Verificar que el provider esté disponible
+        if (typeof window.codecrypto === 'undefined' || !window.codecrypto) {
+          document.getElementById('connection-status').className = 'status error';
+          document.getElementById('connection-status').innerHTML = '✗ Provider no disponible. Asegúrate de que la extensión esté instalada y activa, luego recarga esta página.';
+          return;
+        }
+
+        const accounts = await window.codecrypto.request({
+          method: 'eth_requestAccounts'
+        });
+
+        console.log('[Test App] Accounts received:', accounts);
+
+        if (accounts && accounts.length > 0) {
+          currentAccount = accounts[0];
+          document.getElementById('account-address').textContent = currentAccount;
+          document.getElementById('account-info').style.display = 'grid';
+          document.getElementById('connection-status').className = 'status success';
+          document.getElementById('connection-status').innerHTML = '✓ Conectado a CodeCrypto Wallet';
+          document.getElementById('connect-btn').disabled = true;
+
+          // Obtener chain ID y balance
+          await updateChainId();
+          await updateBalance();
+          startBalancePolling();
+        } else {
+          // No hay cuentas - mostrar mensaje
+          document.getElementById('connection-status').className = 'status info';
+          document.getElementById('connection-status').innerHTML = '⚠️ No hay cuentas disponibles. Por favor:<br>1. Abre el popup de la extensión (icono CC púrpura)<br>2. Crea o importa una wallet<br>3. Vuelve aquí y haz clic en "Conectar Wallet" de nuevo';
+          document.getElementById('connect-btn').disabled = false;
+        }
+      } catch (error) {
+        console.error('Error connecting:', error);
+        document.getElementById('connection-status').className = 'status error';
+        document.getElementById('connection-status').innerHTML = '✗ Error: ' + error.message;
+      }
+    }
+
+    // Actualizar Chain ID
+    async function updateChainId() {
+      try {
+        const chainId = await window.codecrypto.request({ method: 'eth_chainId' });
+        const chainIdNum = parseInt(chainId, 16);
+        document.getElementById('chain-id').textContent = `${chainId} (${chainIdNum})`;
+      } catch (error) {
+        console.error('Error getting chain ID:', error);
+      }
+    }
+
+    // Actualizar balance
+    async function updateBalance() {
+      if (!currentAccount) return;
+
+      try {
+        const balanceHex = await window.codecrypto.request({
+          method: 'eth_getBalance',
+          params: [currentAccount, 'latest']
+        });
+
+        const balanceWei = BigInt(balanceHex);
+        const balanceEth = Number(balanceWei) / 1e18;
+        const balanceFormatted = balanceEth.toFixed(6);
+
+        document.getElementById('account-balance').textContent = `${balanceFormatted} ETH`;
+        document.getElementById('balance-value').textContent = `${balanceFormatted} ETH`;
+        document.getElementById('balance-display').style.display = 'block';
+      } catch (error) {
+        console.error('Error updating balance:', error);
+        document.getElementById('account-balance').textContent = 'Error';
+      }
+    }
+
+    // Polling de balance
+    function startBalancePolling() {
+      if (balanceInterval) clearInterval(balanceInterval);
+      balanceInterval = setInterval(updateBalance, 5000);
+    }
+
+    // Enviar transacción
+    async function sendTransaction() {
+      if (!currentAccount) {
+        alert('Primero conecta la wallet');
+        return;
+      }
+
+      const to = document.getElementById('tx-to').value.trim();
+      const valueEth = document.getElementById('tx-value').value.trim();
+
+      if (!to || !valueEth) {
+        alert('Completa todos los campos');
+        return;
+      }
+
+      try {
+        const valueWei = BigInt(Math.floor(parseFloat(valueEth) * 1e18));
+        const valueHex = '0x' + valueWei.toString(16);
+
+        const txHash = await window.codecrypto.request({
+          method: 'eth_sendTransaction',
+          params: [{
+            to: to,
+            value: valueHex,
+            from: currentAccount
+          }]
+        });
+
+        addToHistory('tx-history', 'success', `Transacción enviada: ${txHash}`);
+        await updateBalance();
+      } catch (error) {
+        console.error('Error sending transaction:', error);
+        addToHistory('tx-history', 'error', `Error: ${error.message}`);
+      }
+    }
+
+    // Firmar mensaje EIP-712
+    async function signMessage() {
+      if (!currentAccount) {
+        alert('Primero conecta la wallet');
+        return;
+      }
+
+      const message = document.getElementById('sign-message').value.trim();
+      if (!message) {
+        alert('Ingresa un mensaje');
+        return;
+      }
+
+      try {
+        // Crear datos EIP-712
+        const domain = {
+          name: 'CodeCrypto Test App',
+          version: '1',
+          chainId: parseInt(await window.codecrypto.request({ method: 'eth_chainId' }), 16),
+          verifyingContract: '0x0000000000000000000000000000000000000000'
+        };
+
+        const types = {
+          Message: [
+            { name: 'content', type: 'string' }
+          ]
+        };
+
+        const value = {
+          content: message
+        };
+
+        const signature = await window.codecrypto.request({
+          method: 'eth_signTypedData_v4',
+          params: [currentAccount, JSON.stringify({ domain, types, primaryType: 'Message', message: value })]
+        });
+
+        addToHistory('sign-history', 'success', 
+          `Firma EIP-712: ${signature}\nMensaje: ${message}`);
+      } catch (error) {
+        console.error('Error signing message:', error);
+        addToHistory('sign-history', 'error', `Error: ${error.message}`);
+      }
+    }
+
+    // Cambiar red
+    async function switchNetwork(chainId) {
+      try {
+        await window.codecrypto.request({
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId }]
+        });
+        await updateChainId();
+        await updateBalance();
+        addToHistory('tx-history', 'success', `Red cambiada a ${chainId}`);
+      } catch (error) {
+        console.error('Error switching network:', error);
+        addToHistory('tx-history', 'error', `Error cambiando red: ${error.message}`);
+      }
+    }
+
+    // Agregar al historial
+    function addToHistory(containerId, type, message) {
+      const container = document.getElementById(containerId);
+      if (container.children.length === 1 && container.children[0].textContent.includes('No hay')) {
+        container.innerHTML = '';
+      }
+
+      const item = document.createElement('div');
+      item.className = `history-item ${type}`;
+      const time = new Date().toLocaleString('es-ES');
+      item.innerHTML = `
+        <div class="history-time">${time}</div>
+        <div class="history-message">${type === 'success' ? '✓' : '✗'} ${message}</div>
+      `;
+      container.insertBefore(item, container.firstChild);
+    }
+
+    // Event listeners
+    document.getElementById('connect-btn').addEventListener('click', connectWallet);
+    document.getElementById('send-tx-btn').addEventListener('click', sendTransaction);
+    document.getElementById('sign-btn').addEventListener('click', signMessage);
+    document.getElementById('update-balance-btn').addEventListener('click', updateBalance);
+    document.getElementById('switch-localhost').addEventListener('click', () => switchNetwork('0x7a69'));
+    document.getElementById('switch-sepolia').addEventListener('click', () => switchNetwork('0xaa36a7'));
+
+    // Escuchar eventos (después de verificar que el provider existe)
+    function setupEventListeners() {
+      if (typeof window.codecrypto !== 'undefined' && window.codecrypto) {
+        window.codecrypto.on('accountsChanged', (accounts) => {
+        if (accounts && accounts.length > 0) {
+          currentAccount = accounts[0];
+          document.getElementById('account-address').textContent = currentAccount;
+          updateBalance();
+        } else {
+          currentAccount = null;
+          document.getElementById('account-info').style.display = 'none';
+          document.getElementById('connection-status').className = 'status info';
+          document.getElementById('connection-status').innerHTML = 'Wallet desconectada';
+          document.getElementById('connect-btn').disabled = false;
+          if (balanceInterval) clearInterval(balanceInterval);
+        }
+      });
+
+        window.codecrypto.on('chainChanged', (chainId) => {
+          updateChainId();
+          updateBalance();
+        });
+      }
+    }
+
+    // Verificar provider al cargar
+    window.addEventListener('load', () => {
+      checkProvider();
+      setupEventListeners();
+      
+      // Verificar periódicamente si el provider se carga
+      let checkCount = 0;
+      const checkInterval = setInterval(() => {
+        checkCount++;
+        if (typeof window.codecrypto !== 'undefined' && window.codecrypto) {
+          clearInterval(checkInterval);
+          checkProvider();
+          setupEventListeners();
+        } else if (checkCount > 10) {
+          clearInterval(checkInterval);
+        }
+      }, 500);
+    });
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,48 @@
+CÓDIGO QUE FUNCIONA - COPIA Y PEGA COMPLETO
+=============================================
+
+Este código usa async/await correctamente:
+
+chrome.storage.local.get(['mnemonic'], async (result) => {
+  if (!result.mnemonic) {
+    console.log('❌ No mnemonic');
+    return;
+  }
+  
+  try {
+    console.log('✅ Mnemonic encontrado, derivando cuentas...');
+    
+    // Importar el módulo ethers
+    const ethersModule = await import(chrome.runtime.getURL('assets/hdwallet-dDksINkW.js'));
+    const { M: Mnemonic, H: HDNodeWallet } = ethersModule;
+    
+    // Derivar cuentas
+    const mnemonicObj = Mnemonic.fromPhrase(result.mnemonic);
+    const accounts = [];
+    
+    for (let i = 0; i < 5; i++) {
+      const path = `m/44'/60'/0'/0/${i}`;
+      const wallet = HDNodeWallet.fromMnemonic(mnemonicObj, path);
+      accounts.push(wallet.address);
+    }
+    
+    console.log('✅ Cuentas derivadas:', accounts);
+    console.log('Total:', accounts.length);
+    
+    // Guardar en storage
+    chrome.storage.local.get(null, (current) => {
+      chrome.storage.local.set({
+        ...current,
+        accounts: accounts,
+        currentAccount: 0
+      }, () => {
+        console.log('✅✅✅ CUENTAS GUARDADAS EXITOSAMENTE!');
+        console.log('Ahora CIERRA y ABRE el popup de la extensión');
+      });
+    });
+  } catch (error) {
+    console.error('❌ Error:', error);
+    console.log('Error completo:', error.message, error.stack);
+  }
+});
+

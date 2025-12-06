@@ -1,0 +1,61 @@
+CÓDIGO PARA RESTAURAR CUENTAS EN SERVICE WORKER
+===============================================
+
+Copia y pega este código completo en la consola del Service Worker:
+
+chrome.storage.local.get(['mnemonic'], async (result) => {
+  if (!result.mnemonic) {
+    console.log('❌ No mnemonic');
+    return;
+  }
+  
+  try {
+    // Acceder directamente a ethers desde el módulo importado
+    // El módulo ya está disponible en el scope del Service Worker
+    const ethersModule = await import(chrome.runtime.getURL('assets/hdwallet-dDksINkW.js'));
+    const { M: Mnemonic, H: HDNodeWallet } = ethersModule;
+    
+    console.log('✅ Derivando cuentas...');
+    const mnemonicObj = Mnemonic.fromPhrase(result.mnemonic);
+    const accounts = [];
+    
+    for (let i = 0; i < 5; i++) {
+      const path = `m/44'/60'/0'/0/${i}`;
+      const wallet = HDNodeWallet.fromMnemonic(mnemonicObj, path);
+      accounts.push(wallet.address);
+    }
+    
+    console.log('✅ Cuentas derivadas:', accounts);
+    
+    // Guardar
+    chrome.storage.local.get(null, (current) => {
+      chrome.storage.local.set({
+        ...current,
+        accounts: accounts,
+        currentAccount: 0
+      }, () => {
+        console.log('✅✅✅ CUENTAS GUARDADAS!');
+        console.log('Total:', accounts.length);
+        console.log('Ahora CIERRA y ABRE el popup de nuevo');
+      });
+    });
+  } catch (error) {
+    console.error('❌ Error:', error);
+    console.log('Intentando método alternativo...');
+    
+    // Método alternativo: usar las funciones globales si están disponibles
+    if (typeof Mnemonic !== 'undefined' && typeof HDNodeWallet !== 'undefined') {
+      const mnemonicObj = Mnemonic.fromPhrase(result.mnemonic);
+      const accounts = [];
+      for (let i = 0; i < 5; i++) {
+        const path = `m/44'/60'/0'/0/${i}`;
+        const wallet = HDNodeWallet.fromMnemonic(mnemonicObj, path);
+        accounts.push(wallet.address);
+      }
+      chrome.storage.local.set({ accounts, currentAccount: 0 }, () => {
+        console.log('✅ Guardado con método alternativo');
+      });
+    }
+  }
+});
+
